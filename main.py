@@ -26,8 +26,8 @@ display_name_cache = {}
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}!')
-    MY_GUILD = discord.Object(id='688826072187404290')
-    await bot.tree.sync(guild=MY_GUILD)
+    # MY_GUILD = discord.Object(id='688826072187404290')
+    # await bot.tree.sync(guild=MY_GUILD)
     await bot.tree.sync()
 
 @bot.tree.command(name="register")
@@ -42,7 +42,6 @@ async def register(interaction: discord.Interaction):
     channel_id = str(interaction.channel_id)
     names[channel_id] = []  # Initialize an empty list for names
     registration_messages[channel_id] = message.id
-
 
 @bot.event
 async def on_reaction_add(reaction, user):
@@ -113,7 +112,6 @@ def generate_discord_timestamp():
         next_match = now.replace(second=0, microsecond=0, minute=0) + datetime.timedelta(hours=1)
     return int(next_match.timestamp())
 
-
 @bot.tree.command(name="choose")
 @app_commands.describe(number='The number of participants to choose', mention='Will @ members if true', included_members='Members to always include')
 async def choose(interaction: discord.Interaction, number: int, mention: bool = False, included_members: str = ''):
@@ -181,8 +179,6 @@ def try_selecting_more_participants(chosen, number, participants):
         to_add = min(len(available_members), number - len(chosen))
         chosen.extend(random.sample(available_members, to_add))
 
-
-
 @bot.tree.command(name="add")
 @app_commands.describe(member='Member to add')
 async def add_participant(interaction: discord.Interaction, member: discord.Member):
@@ -206,7 +202,6 @@ async def delete_participant(interaction: discord.Interaction, member: discord.M
     names[channel_id] = [(user_id, picked) for user_id, picked in names[channel_id] if user_id != member.id]
     await update_embed(interaction)
     await interaction.response.send_message(f"{member.display_name} has been removed from the participant list.", ephemeral=True)
-
 
 @bot.tree.command(name="help")
 async def help(interaction: discord.Interaction, visible: bool = False):
@@ -247,11 +242,7 @@ def get_discord_bot_token():
         raise RuntimeError("Discord bot token not found. Please set the DISCORD_BOT_TOKEN environment variable.")
     return token
 
-
 def main():
-    # Initialize the bot with the desired intents
-    bot = commands.Bot(command_prefix='/', intents=intents)
-
     try:
         token = get_discord_bot_token()
     except RuntimeError as e:
@@ -260,7 +251,6 @@ def main():
 
     # Run the bot with the loaded token
     bot.run(token)
-
 
 if __name__ == "__main__":
     main()
