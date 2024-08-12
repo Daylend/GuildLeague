@@ -1,10 +1,10 @@
 version: '3.8'
 
 services:
-  guildleague-bot:
+  discord-bot:
     build: .
-    image: guildleague-bot:latest
-    container_name: guildleague-bot
-    restart: unless-stopped
     environment:
       - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+    volumes:
+      - ./:/usr/src/app
+    restart: unless-stopped
